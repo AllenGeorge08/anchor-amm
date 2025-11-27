@@ -59,7 +59,7 @@ pub mod anchor_amm {
         Ok(())
     }
 
-    pub fn locked(ctx: Context<Lock>) -> Result<()> {
+    pub fn lock(ctx: Context<Lock>) -> Result<()> {
         ctx.accounts.lock()?;
         Ok(())
     }
