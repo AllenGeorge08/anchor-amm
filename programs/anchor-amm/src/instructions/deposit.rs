@@ -134,7 +134,7 @@ impl<'info> Deposit<'info> {
         let cpi_program = self.token_program.to_account_info();
         let cpi_accounts = MintTo {
             mint: self.mint_lp.to_account_info(),
-            to: self.user.to_account_info(),
+            to: self.user_lp.to_account_info(),
             authority: self.config.to_account_info(),
         };
 

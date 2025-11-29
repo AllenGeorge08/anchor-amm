@@ -1,3 +1,5 @@
+
+
 use crate::{error::AmmError, state::Config};
 use anchor_lang::prelude::*;
 use anchor_spl::{
@@ -7,7 +9,7 @@ use anchor_spl::{
 use constant_product_curve::{ConstantProduct, LiquidityPair, SwapResult};
 
 #[derive(Accounts)]
-#[instruction(seed: u64, is_x: bool,amount: u64,min: u64,)]
+#[instruction(seed: u64, is_x: bool,amount: u64,min: u64)]
 pub struct Swap<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
@@ -76,7 +78,7 @@ impl<'info> Swap<'info> {
             false => LiquidityPair::Y,
         };
 
-        let result = self.calculate_swap(pair_to_swap, amount, min).unwrap();
+        let result = self.calculate_swap(pair_to_swap, amount, min)?;
         let (amount_to_deposit, amount_to_withdraw, fee) =
             (result.deposit, result.withdraw, result.fee);
 
@@ -123,10 +125,18 @@ impl<'info> Swap<'info> {
             self.mint_lp.supply,
             self.config.fee,
             Some(6),
-        )
-        .unwrap();
+        ).map_err(|e| 
+        {   msg!("Error while initializing curve: {} ",e);
+            AmmError::DefaultError})?;
+        
 
-        let swap_result = curve.swap(pair_to_swap, amount, min).unwrap();
+        
+        // let p = match is_x {
+        //     true => LiquidityPair::X,
+        //     false => LiquidityPair::Y
+        // };
+
+        let swap_result = curve.swap(pair_to_swap, amount, min).map_err(|_| AmmError::CurveError)?;
 
         Ok(swap_result)
     }
@@ -140,7 +150,7 @@ impl<'info> Swap<'info> {
             ),
             false => (
                 self.vault_x.to_account_info(),
-                self.user_y.to_account_info(),
+                self.user_x.to_account_info(),
             ),
         };
 

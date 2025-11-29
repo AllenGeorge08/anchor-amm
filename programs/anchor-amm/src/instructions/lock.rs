@@ -16,7 +16,7 @@ pub struct Lock<'info> {
 }
 
 impl<'info> Lock<'info> {
-    pub fn lock(&mut self) -> Result<()> {
+    pub fn lock(&mut self,seed: u64) -> Result<()> {
         require_eq!(
             self.user.key(),
             self.config.authority.unwrap(),
@@ -26,7 +26,7 @@ impl<'info> Lock<'info> {
         Ok(())
     }
 
-    pub fn unlock(&mut self) -> Result<()> {
+    pub fn unlock(&mut self,seed: u64) -> Result<()> {
         require_eq!(
             self.user.key(),
             self.config.authority.unwrap(),

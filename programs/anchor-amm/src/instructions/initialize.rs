@@ -15,7 +15,7 @@ pub struct Initialize<'info> {
     #[account(mut)]
     pub mint_y: Box<Account<'info, Mint>>,
     #[account(
-        init,
+        init_if_needed,
         payer = initializer,
         seeds = [b"lp", config.key().as_ref()], //e unique for each config
         bump,
@@ -24,7 +24,7 @@ pub struct Initialize<'info> {
     )]
     pub mint_lp: Box<Account<'info, Mint>>,
     #[account(
-        init,
+        init_if_needed,
         payer = initializer,
         seeds = [b"config",seed.to_le_bytes().as_ref()],
         bump,

@@ -125,7 +125,7 @@ impl<'info> Withdraw<'info> {
         let cpi_program = self.token_program.to_account_info();
         let cpi_accounts = Burn {
             mint: self.mint_lp.to_account_info(),
-            from: self.user.to_account_info(),
+            from: self.user_lp.to_account_info(),
             authority: self.user.to_account_info(), //q who'll be the authority here rn...
         };
 

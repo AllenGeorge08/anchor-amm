@@ -50,6 +50,7 @@ pub mod anchor_amm {
 
     pub fn swap(
         ctx: Context<Swap>,
+        seed: u64,
         is_x: bool,
         // pair_to_swap: LiquidityPair,
         amount: u64,
@@ -59,13 +60,13 @@ pub mod anchor_amm {
         Ok(())
     }
 
-    pub fn lock(ctx: Context<Lock>) -> Result<()> {
-        ctx.accounts.lock()?;
+    pub fn lock(ctx: Context<Lock>,seed: u64) -> Result<()> {
+        ctx.accounts.lock(seed)?;
         Ok(())
     }
 
-    pub fn unlock(ctx: Context<Lock>) -> Result<()> {
-        ctx.accounts.unlock()?;
+    pub fn unlock(ctx: Context<Lock>,seed: u64) -> Result<()> {
+        ctx.accounts.unlock(seed)?;
         Ok(())
     }
 }
